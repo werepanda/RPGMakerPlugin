@@ -6,6 +6,7 @@
 // 2021-06-01 Ver.1.1.0 Support "\N[\V[x]]" format.
 // 2021-06-02 Ver.1.1.1 Bug fix.
 // 2021-07-24 Ver.1.1.2 Bug fix.
+// 2022-09-04 Ver.1.1.3 Bug fix.
 
 /*:
  * @target MZ
@@ -89,7 +90,7 @@
 		// no face image
 		if (params[0] === '') {
 			// speaker name
-			if (params[4] != '') {
+			if (params[4]) {
 				// convert variable
 				const name = params[4].replace(/\\V\[(\d+)\]/gi, (_, p1) =>
 					$gameVariables.value(parseInt(p1))
