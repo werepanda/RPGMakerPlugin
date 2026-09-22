@@ -3,6 +3,7 @@
 //=============================================================================
 // [Update History]
 // 2026-09-22 Ver.1.0.0 First Release for MZ.
+// 2026-09-23 Ver.1.0.1 Add <NoRecentItem> meta tag option.
 
 /*:
  * @target MZ
@@ -24,7 +25,9 @@
  * after being used or equipped.
  * If the same item is acquired again, it is not duplicated,
  * but instead moved to the top of the list.
- * Items of type "Hidden Item A/B" are not added to the list.
+ * 
+ * Items of type "Hidden Item A/B", or items with <NoRecentItem>
+ * written in the Note field, are not shown in the list.
  * 
  * An actor's initial equipment is also added to the list when the actor
  * joins the party for the first time.
@@ -95,7 +98,9 @@
  * アイテムの使用や装備により現在の所持数が0になっても、一覧には表示されます。
  * また、同じアイテムを複数回入手した場合は重複して表示されず、
  * 再び入手したアイテムは一覧の先頭に移動します。
- * アイテム種別が「隠しアイテムA/B」の場合は、一覧には表示されません。
+ * 
+ * アイテム種別が「隠しアイテムA/B」の場合や、
+ * メモ欄に <NoRecentItem> と記述した場合は、一覧には表示されません。
  * 
  * なお、アクターの初期装備も、そのアクターの初回加入時に一覧に追加されます。
  * 加入時に装備品を最近入手アイテムとして登録したくない場合や、
@@ -166,7 +171,9 @@
  * 아이템을 사용하거나 장비하여 현재 소지수가 0이 되어도 목록에는 표시됩니다.
  * 또한 같은 아이템을 여러 번 획득해도 종복해서 표시되지 않으며,
  * 다시 획득한 아이템은 목록에 맨 위로 이동합니다.
- * 아이템 종류가 [숨겨진 아이템 A/B] 인 경우에는 목록에 표시되지 않습니다.
+ * 
+ * 아이템 종류가 [숨겨진 아이템 A/B] 이거나
+ * 메모란에 <NoRecentItem> 이라고 기재한 경우에는 목록에 표시되지 않습니다.
  * 
  * 액터의 초기 장비도 해당 액터가 처음 파티에 합류할 때 목록에 추가됩니다.
  * 합류시에 장비를 최근 획득 아이템으로 등록하지 않거나
@@ -308,7 +315,7 @@
 	Game_Party.prototype.addRecentItem = function(item) {
 		this.initRecentItems();
 		if (!!item && this.isRecentItemEnabled()) {
-			if (!DataManager.isItem(item) || item.itypeId <= 2) {
+			if ((!DataManager.isItem(item) || item.itypeId <= 2) && !item.meta.NoRecentItem) {
 				this._recentItems = this._recentItems.filter(obj => obj.object() !== item);
 				this._recentItems.unshift(new Game_Item(item));
 				if (RecentCount > 0) {
@@ -450,7 +457,7 @@
 	
 	//--------------------------------------------------
 	// Window_ItemList.drawItemName
-	//  [Modified Definition]
+	//  [Added Definition]
 	//--------------------------------------------------
 	const _Window_ItemList_drawItemName = Window_ItemList.prototype.drawItemName;
 	Window_ItemList.prototype.drawItemName = function(item, x, y, width) {
