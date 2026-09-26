@@ -4,6 +4,7 @@
 // [Update History]
 // 2026-09-22 Ver.1.0.0 First Release for MZ.
 // 2026-09-23 Ver.1.0.1 Add <NoRecentItem> meta tag option.
+// 2026-09-27 Ver.1.0.2 Bug fix for Shop Sell.
 
 /*:
  * @target MZ
@@ -469,6 +470,16 @@
 				this.drawText(RecentMark, x + textMargin, y, itemWidth, 'right');
 			}
 		}
+	};
+	
+	
+	//--------------------------------------------------
+	// Window_ShopSell.isEnabled
+	//  [Added Definition]
+	//--------------------------------------------------
+	const _Window_ShopSell_isEnabled = Window_ShopSell.prototype.isEnabled;
+	Window_ShopSell.prototype.isEnabled = function(item) {
+		return _Window_ShopSell_isEnabled.call(this, item) && $gameParty.numItems(item) > 0;
 	};
 	
 })();
