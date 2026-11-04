@@ -3,6 +3,7 @@
 //=============================================================================
 // [Update History]
 // 2026-11-04 Ver.1.0.0 First Release for MZ.
+// 2026-11-05 Ver.1.0.1 Bug fix for recent equipment.
 
 /*:
  * @target MZ
@@ -267,7 +268,7 @@
 		this.changePaintOpacity(true);
 		this.drawText(CandidateTitle, rect.x, rect.y, rect.width);
 		// get candidate items
-		const candidateItems = $gameParty.equipItems().filter(item => ($gameParty.hasItem(item) && this._actor.canEquip(item) && item.etypeId === etypeId));
+		const candidateItems = $gameParty.recentEquipments().filter(item => ($gameParty.hasItem(item) && this._actor.canEquip(item) && item.etypeId === etypeId));
 		// total count
 		this.changeTextColor(ColorManager.normalColor());
 		this.drawText(CountFormat.format(candidateItems.length), rect.x, rect.y, rect.width, 'right');
